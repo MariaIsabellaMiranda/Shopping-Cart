@@ -14,8 +14,30 @@ const createCustomElement = (element, className, innerText) => {
   return e;
 };
 
+const convertString = () => {
+  const li = ol.childNodes;
+  const pricesArray = [];
+  li.forEach((element) => {
+    const priceStr = element.innerText.split('$');
+    pricesArray.push(parseFloat(priceStr[1]));
+  });
+  return pricesArray;
+};
+
+const somaTotal = () => {
+  const tagPrice = document.querySelector('.price');
+  const soma = convertString().reduce((acc, cur) => (acc + cur), 0);
+  console.log(soma);
+    if (soma === 0) {
+      tagPrice.innerText = 'R$ 0,00';
+    } else {
+      tagPrice.innerText = `R$ ${soma}`;
+    }
+};
+
 const cartItemClickListener = (event) => {
   event.target.remove();
+  somaTotal();
   saveCartItems(ol.innerHTML);
 };
 
@@ -37,6 +59,7 @@ const addItem = async (item) => {
   const itemObj = { sku: id, name: title, salePrice: price };
   ol.appendChild(createCartItemElement(itemObj));
   saveCartItems(ol.innerHTML);
+  somaTotal();
 };
 
 const createProductItemElement = ({ sku, name, image }) => {
@@ -76,7 +99,3 @@ const itemsSalvos = () => {
 };
 
 window.onload = () => { getElements(); itemsSalvos(); };
-
-// const total = () => {
-  
-// }
