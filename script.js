@@ -14,14 +14,6 @@ const createCustomElement = (element, className, innerText) => {
   return e;
 };
 
-const createSubtotal = () => {
-  const h2 = document.createElement('h2');
-  h2.className = 'price';
-  h2.innerText = 'Subtotal: ';
-  const div = document.querySelector('.total-price');
-  div.appendChild(h2);
-};
-
 const convertString = () => {
   const li = ol.childNodes;
   const pricesArray = [];
@@ -33,12 +25,12 @@ const convertString = () => {
 };
 
 const somaTotal = () => {
-  const tagPrice = document.querySelector('.price');
+  const tagPrice = document.querySelector('.total-price');
   const soma = convertString().reduce((acc, cur) => (acc + cur), 0);
     if (soma === 0) {
-      tagPrice.innerText = 'Subtotal: R$ 0,00';
+      tagPrice.innerText = '0,00';
     } else {
-      tagPrice.innerText = `Subtotal: R$ ${soma}`;
+      tagPrice.innerText = soma;
     }
 };
 
@@ -105,4 +97,14 @@ const itemsSalvos = () => {
   });
 };
 
-window.onload = () => { getElements(); itemsSalvos(); createSubtotal(); };
+const limpaCarrinho = () => {
+  ol.innerHTML = '';
+  somaTotal();
+};
+
+const createEventButton = () => {
+  const bt = document.querySelector('.empty-cart');
+  bt.addEventListener('click', limpaCarrinho);
+};
+
+window.onload = () => { getElements(); itemsSalvos(); createEventButton(); };
