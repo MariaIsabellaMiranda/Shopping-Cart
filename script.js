@@ -14,6 +14,14 @@ const createCustomElement = (element, className, innerText) => {
   return e;
 };
 
+const createSubtotal = () => {
+  const h2 = document.createElement('h2');
+  h2.className = 'price';
+  h2.innerText = 'Subtotal: ';
+  const div = document.querySelector('.total-price');
+  div.appendChild(h2);
+};
+
 const convertString = () => {
   const li = ol.childNodes;
   const pricesArray = [];
@@ -27,11 +35,10 @@ const convertString = () => {
 const somaTotal = () => {
   const tagPrice = document.querySelector('.price');
   const soma = convertString().reduce((acc, cur) => (acc + cur), 0);
-  console.log(soma);
     if (soma === 0) {
-      tagPrice.innerText = 'R$ 0,00';
+      tagPrice.innerText = 'Subtotal: R$ 0,00';
     } else {
-      tagPrice.innerText = `R$ ${soma}`;
+      tagPrice.innerText = `Subtotal: R$ ${soma}`;
     }
 };
 
@@ -98,4 +105,4 @@ const itemsSalvos = () => {
   });
 };
 
-window.onload = () => { getElements(); itemsSalvos(); };
+window.onload = () => { getElements(); itemsSalvos(); createSubtotal(); };
