@@ -1,4 +1,18 @@
 const ol = document.querySelector('.cart__items');
+const tagPrice = document.querySelector('.total-price');
+
+const createLoading = () => {
+  const pai = document.querySelector('.container');
+  const load = document.createElement('p');
+  load.className = 'loading'; 
+  load.innerText = 'carregando...';
+  pai.appendChild(load);
+};
+
+const removeLoading = () => {
+  const load = document.querySelector('.loading');
+  load.remove();
+};
 
 const createProductImageElement = (imageSource) => {
   const img = document.createElement('img');
@@ -25,13 +39,13 @@ const convertString = () => {
 };
 
 const somaTotal = () => {
-  const tagPrice = document.querySelector('.total-price');
   const soma = convertString().reduce((acc, cur) => (acc + cur), 0);
     if (soma === 0) {
       tagPrice.innerText = '0,00';
     } else {
       tagPrice.innerText = soma;
     }
+    localStorage.setItem('subtotal', tagPrice.innerText);
 };
 
 const cartItemClickListener = (event) => {
@@ -54,7 +68,9 @@ const getSkuFromProductItem = (item) => {
 };
 
 const addItem = async (item) => {
+  createLoading();
   const { id, title, price } = await fetchItem(getSkuFromProductItem(item));
+  removeLoading();
   const itemObj = { sku: id, name: title, salePrice: price };
   ol.appendChild(createCartItemElement(itemObj));
   saveCartItems(ol.innerHTML);
@@ -74,14 +90,18 @@ const createProductItemElement = ({ sku, name, image }) => {
 };
 
 const getResults = async () => {
+  createLoading();
   const products = await fetchProducts('computador');
+  removeLoading();
   const { results } = products;
   return results;
 };
 
 const getElements = async () => {
   const section = document.querySelector('.items');
+  createLoading();
   const results = await getResults();
+  removeLoading();
   results.forEach((elementFor) => {
       const { id, title, thumbnail } = elementFor;
       const parametro = { sku: id, name: title, image: thumbnail };
@@ -95,11 +115,14 @@ const itemsSalvos = () => {
   li.forEach((element) => {
     element.addEventListener('click', cartItemClickListener);
   });
+  const subtotal = localStorage.getItem('subtotal');
+  tagPrice.innerText = subtotal;
 };
 
 const limpaCarrinho = () => {
   ol.innerHTML = '';
   somaTotal();
+  saveCartItems(ol.innerHTML);
 };
 
 const createEventButton = () => {
