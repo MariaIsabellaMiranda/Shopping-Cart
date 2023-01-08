@@ -21,6 +21,7 @@ Ao clicar no botão o produto é adicionado ao carrinho e salvo no localStorage,
 Dentro do carrinho é possível ver o valor total dos produtos, excluir um produto individualmente e limpar o carrinho por completo.
 
 ## Como excutar o projeto
+ ⚠️**Importante**: É necessário ter o `node` na versão `16` instalado em sua máquina!
 
 - Clone o projeto para sua máquina local;
 - `cd` no diretório do projeto;
